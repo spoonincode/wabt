@@ -121,7 +121,10 @@ static void RunAllExports(interp::Module* module,
     if (export_.kind != ExternalKind::Func) {
       continue;
     }
+    unsigned long long t0 = __builtin_readcyclecounter();
     ExecResult exec_result = executor->RunExport(&export_, args);
+    unsigned long long t1 = __builtin_readcyclecounter();
+    printf("tsc ticks: %llu\n", t1-t0);
     if (verbose == RunVerbosity::Verbose) {
       WriteCall(s_stdout_stream.get(), string_view(), export_.name, args,
                 exec_result.values, exec_result.result);
